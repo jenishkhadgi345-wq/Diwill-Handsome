@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0,
+                   user-scalable=no">
+
+    <meta name="theme-color"
+          content="#07090d">
+
+    <title>Mind Lab | Secure Access</title>
+
+
+    <style>
+
+        /* ================================
+           RESET
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            background: #07090d;
+
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ================================
+           BACKGROUND
+        ================================= */
+
+        .background-glow {
+            position: fixed;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            filter: blur(100px);
+
+            opacity: 0.16;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        .glow-one {
+            background: #00d9ff;
+
+            top: -120px;
+            left: -100px;
+        }
+
+
+        .glow-two {
+            background: #7545ff;
+
+            bottom: -120px;
+            right: -100px;
+        }
+
+
+        /* ================================
+           LOGIN CARD
+        ================================= */
+
+        .login-container {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 42px 32px;
+
+            background:
+                rgba(13, 17, 24, 0.97);
+
+            border: 1px solid #252e39;
+
+            border-radius: 20px;
+
+            text-align: center;
+
+            position: relative;
+
+            z-index: 2;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* ================================
+           ICON
+        ================================= */
+
+        .login-icon {
+
+            font-size: 55px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* ================================
+           STATUS
+        ================================= */
+
+        .login-status {
+
+            display: inline-block;
+
+            padding: 9px 13px;
+
+            background: #0a0e14;
+
+            border: 1px solid #26303b;
+
+            border-radius: 30px;
+
+            color: #718092;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        /* ================================
+           HEADING
+        ================================= */
+
+        h1 {
+
+            font-size: 32px;
+
+            line-height: 1.25;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        h1 span {
+
+            color: #00d9ff;
+
+        }
+
+
+        .login-description {
+
+            color: #697483;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            margin-bottom: 32px;
+
+        }
+
+
+        /* ================================
+           INPUT GROUP
+        ================================= */
+
+        .input-group {
+
+            text-align: left;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .input-group label {
+
+            display: block;
+
+            color: #7b8796;
+
+            font-size: 9px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        /* ================================
+           INPUT
+        ================================= */
+
+        .input-wrapper {
+
+            width: 100%;
+
+            min-height: 56px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 0 15px;
+
+            background: #080c11;
+
+            border: 1px solid #29333f;
+
+            border-radius: 10px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .input-wrapper:focus-within {
+
+            border-color: #00d9ff;
+
+            box-shadow:
+                0 0 15px
+                rgba(0, 217, 255, 0.08);
+
+        }
+
+
+        .input-icon {
+
+            color: #667383;
+
+            font-size: 17px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            min-width: 0;
+
+            height: 54px;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 16px;
+
+            /* Important for iPhone:
+               prevents automatic zoom */
+
+            -webkit-appearance: none;
+
+            appearance: none;
+
+        }
+
+
+        input::placeholder {
+
+            color: #46515f;
+
+        }
+
+
+        /* ================================
+           PASSWORD TOGGLE
+        ================================= */
+
+        .password-toggle {
+
+            border: none;
+
+            background: transparent;
+
+            color: #667383;
+
+            font-size: 16px;
+
+            padding: 8px;
+
+            cursor: pointer;
+
+            flex-shrink: 0;
+
+            -webkit-tap-highlight-color:
+                transparent;
+
+        }
+
+
+        /* ================================
+           ERROR
+        ================================= */
+
+        .login-error {
+
+            min-height: 24px;
+
+            margin: 4px 0 8px;
+
+            color: #ff526b;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            line-height: 1.5;
+
+        }
+
+
+        .login-error.success {
+
+            color: #00e5a0;
+
+        }
+
+
+        /* ================================
+           INFO
+        ================================= */
+
+        .privacy-note {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 14px;
+
+            margin: 10px 0 22px;
+
+            background: #0b1016;
+
+            border: 1px solid #1d2530;
+
+            border-radius: 9px;
+
+            text-align: left;
+
+        }
+
+
+        .privacy-note span {
+
+            font-size: 18px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .privacy-note p {
+
+            color: #596474;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* ================================
+           LOGIN BUTTON
+        ================================= */
+
+        .login-button {
+
+            width: 100%;
+
+            min-height: 56px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #00d9ff;
+
+            color: #031015;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 18px;
+
+            transition: 0.2s;
+
+            -webkit-tap-highlight-color:
+                transparent;
+
+        }
+
+
+        .login-button:active {
+
+            transform: scale(0.98);
+
+        }
+
+
+        .login-button:hover {
+
+            box-shadow:
+                0 12px 30px
+                rgba(0, 217, 255, 0.16);
+
+        }
+
+
+        .login-button b {
+
+            font-size: 19px;
+
+        }
+
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        .login-footer {
+
+            margin-top: 25px;
+
+            color: #3f4855;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .login-footer strong {
+
+            color: #00d9ff;
+
+        }
+
+
+        /* ================================
+           SHAKE
+        ================================= */
+
+        .wrong-input {
+
+            border-color:
+                #ff526b !important;
+
+            animation:
+                shake 0.4s;
+
+        }
+
+
+        @keyframes shake {
+
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-6px);
+            }
+
+            50% {
+                transform: translateX(6px);
+            }
+
+            75% {
+                transform: translateX(-6px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+
+        }
+
+
+        /* ================================
+           SMALL PHONES
+        ================================= */
+
+        @media (max-width: 380px) {
+
+            body {
+                padding: 14px;
+            }
+
+            .login-container {
+                padding: 32px 20px;
+                border-radius: 17px;
+            }
+
+            .login-icon {
+                font-size: 48px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .login-description {
+                font-size: 12px;
+            }
+
+        }
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Background -->
+
+    <div class="background-glow glow-one"></div>
+
+    <div class="background-glow glow-two"></div>
+
+
+
+    <!-- Login -->
+
+    <main class="login-container">
+
+
+        <div class="login-icon">
+
+            🧠
+
+        </div>
+
+
+
+        <div class="login-status">
+
+            🔒 SECURE ACCESS REQUIRED
+
+        </div>
+
+
+
+        <h1>
+
+            Identify Yourself,
+
+            <span>Diwill.</span>
+
+        </h1>
+
+
+
+        <p class="login-description">
+
+            The Mind Lab is protected.
+
+            <br>
+
+            Enter your email and secret password
+            provided by Jenish to continue.
+
+        </p>
+
+
+
+        <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="input-group">
+
+                <label for="email">
+
+                    EMAIL ADDRESS
+
+                </label>
+
+
+                <div
+                    class="input-wrapper"
+                    id="emailWrapper">
+
+
+                    <span class="input-icon">
+
+                        ✉
+
+                    </span>
+
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        autocapitalize="none"
+                        spellcheck="false"
+                        inputmode="email"
+                        required>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="input-group">
+
+                <label for="password">
+
+                    SECRET PASSWORD
+
+                </label>
+
+
+                <div
+                    class="input-wrapper"
+                    id="passwordWrapper">
+
+
+                    <span class="input-icon">
+
+                        🔑
+
+                    </span>
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter the secret password"
+                        autocomplete="current-password"
+                        required>
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="togglePassword"
+                        aria-label="Show password">
+
+                        👁
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="loginError"
+                class="login-error">
+
+            </div>
+
+
+
+            <!-- INFO -->
+
+            <div class="privacy-note">
+
+                <span>
+
+                    🛡️
+
+                </span>
+
+
+                <p>
+
+                    Your information is only used
+                    for this test session.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="login-button">
+
+                <span>
+
+                    VERIFY & ENTER
+
+                </span>
+
+
+                <b>
+
+                    →
+
+                </b>
+
+            </button>
+
+
+        </form>
+
+
+
+        <div class="login-footer">
+
+            SYSTEM CREATED BY
+
+            <strong>
+
+                JENISH
+
+            </strong>
+
+        </div>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        /* =================================
+           ELEMENTS
+        ================================= */
+
+        const form =
+            document.getElementById(
+                "loginForm"
+            );
+
+
+        const email =
+            document.getElementById(
+                "email"
+            );
+
+
+        const password =
+            document.getElementById(
+                "password"
+            );
+
+
+        const errorMessage =
+            document.getElementById(
+                "loginError"
+            );
+
+
+        const passwordToggle =
+            document.getElementById(
+                "togglePassword"
+            );
+
+
+        const emailWrapper =
+            document.getElementById(
+                "emailWrapper"
+            );
+
+
+        const passwordWrapper =
+            document.getElementById(
+                "passwordWrapper"
+            );
+
+
+
+        /* =================================
+           SHOW / HIDE PASSWORD
+        ================================= */
+
+        passwordToggle.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    password.type ===
+                    "password"
+                ) {
+
+                    password.type =
+                        "text";
+
+                    passwordToggle.textContent =
+                        "🙈";
+
+                }
+
+                else {
+
+                    password.type =
+                        "password";
+
+                    passwordToggle.textContent =
+                        "👁";
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================
+           LOGIN
+        ================================= */
+
+        form.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const enteredEmail =
+                    email.value.trim();
+
+
+                const enteredPassword =
+                    password.value;
+
+
+                const correctEmail =
+                    "diwillgay69@gmail.com";
+
+
+                const correctPassword =
+                    "DiwillIsGay";
+
+
+
+                /* Clear message */
+
+                errorMessage.className =
+                    "login-error";
+
+                errorMessage.textContent =
+                    "";
+
+
+
+                /* Check email */
+
+                if (
+                    enteredEmail !==
+                    correctEmail
+                ) {
+
+                    errorMessage.textContent =
+                        "🚨 ACCESS DENIED — Incorrect email.";
+
+                    shake(emailWrapper);
+
+                    email.focus();
+
+                    return;
+
+                }
+
+
+
+                /* Check password */
+
+                if (
+                    enteredPassword !==
+                    correctPassword
+                ) {
+
+                    errorMessage.textContent =
+                        "🚨 ACCESS DENIED — Incorrect password.";
+
+                    shake(passwordWrapper);
+
+                    password.focus();
+
+                    return;
+
+                }
+
+
+
+                /* =========================
+                   SUCCESS
+                ========================= */
+
+                errorMessage.classList.add(
+                    "success"
+                );
+
+
+                errorMessage.textContent =
+                    "✓ ACCESS GRANTED — Welcome, Diwill.";
+
+
+
+                /* Save session */
+
+                localStorage.setItem(
+                    "diwillEmail",
+                    enteredEmail
+                );
+
+
+                localStorage.setItem(
+                    "diwillName",
+                    "Diwill"
+                );
+
+
+                localStorage.setItem(
+                    "diwillLoggedIn",
+                    "true"
+                );
+
+
+
+                /* Disable button */
+
+                const button =
+                    document.querySelector(
+                        ".login-button"
+                    );
+
+
+                button.disabled = true;
+
+
+                button.innerHTML =
+                    "<span>ACCESS GRANTED ✓</span>";
+
+
+
+                /* Go to test */
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "test.html";
+
+                    },
+                    700
+                );
+
+            }
+        );
+
+
+
+        /* =================================
+           SHAKE FUNCTION
+        ================================= */
+
+        function shake(element) {
+
+            element.classList.remove(
+                "wrong-input"
+            );
+
+
+            void element.offsetWidth;
+
+
+            element.classList.add(
+                "wrong-input"
+            );
+
+
+            setTimeout(
+                function() {
+
+                    element.classList.remove(
+                        "wrong-input"
+                    );
+
+                },
+                450
+            );
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

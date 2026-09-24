@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Mind Lab | Results
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body class="result-page">
+
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+
+    <main class="result-container">
+
+
+        <div class="result-header">
+
+            <div class="result-icon">
+                🧠
+            </div>
+
+            <p>
+                INTELLIGENCE ANALYSIS COMPLETE
+            </p>
+
+            <h1>
+
+                RESULTS FOR
+                <span>DIWILL</span>
+
+            </h1>
+
+        </div>
+
+
+        <section class="result-card">
+
+
+            <p class="score-label">
+
+                FINAL SCORE
+
+            </p>
+
+
+            <div class="score-circle">
+
+                <div>
+
+                    <strong
+                        id="finalScore">
+                        0
+                    </strong>
+
+                    <small>
+                        /15
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <h2 id="resultTitle">
+
+                Calculating...
+
+            </h2>
+
+
+            <p
+                id="resultMessage"
+                class="result-message">
+
+                Please wait...
+
+            </p>
+
+
+            <!-- Statistics -->
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <span id="correctAnswers">
+                        0
+                    </span>
+
+                    <small>
+                        CORRECT
+                    </small>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span id="wrongAnswers">
+                        0
+                    </span>
+
+                    <small>
+                        WRONG
+                    </small>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <span id="percentage">
+                        0%
+                    </span>
+
+                    <small>
+                        ACCURACY
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Result message -->
+
+            <div class="analysis-box">
+
+                <div>
+                    📊
+                </div>
+
+                <div>
+
+                    <strong>
+                        JENISH'S ANALYSIS
+                    </strong>
+
+                    <p id="analysisText">
+
+                        Analysis loading...
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="result-buttons">
+
+                <button
+                    class="restart-button"
+                    onclick="restartTest()">
+
+                    🔄
+                    TAKE TEST AGAIN
+
+                </button>
+
+
+                <button
+                    class="home-button"
+                    onclick="goHome()">
+
+                    ←
+                    HOME
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+        <p class="creator-message">
+
+            Prepared with questionable confidence
+            by <strong>Jenish</strong> 😎
+
+        </p>
+
+
+    </main>
+
+
+    <script>
+
+        const score =
+            Number(
+                localStorage.getItem("diwillScore")
+            ) || 0;
+
+
+        const total =
+            15;
+
+
+        const correct =
+            Number(
+                localStorage.getItem("diwillCorrect")
+            ) || 0;
+
+
+        const wrong =
+            total - correct;
+
+
+        const percentage =
+            Math.round(
+                (correct / total) * 100
+            );
+
+
+        const playerName =
+            localStorage.getItem(
+                "diwillName"
+            ) || "Diwill";
+
+
+        document.getElementById(
+            "finalScore"
+        ).textContent = correct;
+
+
+        document.getElementById(
+            "correctAnswers"
+        ).textContent = correct;
+
+
+        document.getElementById(
+            "wrongAnswers"
+        ).textContent = wrong;
+
+
+        document.getElementById(
+            "percentage"
+        ).textContent = percentage + "%";
+
+
+        let title = "";
+
+        let message = "";
+
+        let analysis = "";
+
+
+        if (correct <= 4) {
+
+            title =
+                "THE SUSPICIOUS ONE 🧐";
+
+            message =
+                "Diwill... we may need to investigate whether you actually read the questions.";
+
+            analysis =
+                "The Mind Lab recommends a second attempt. Preferably after your brain has officially joined the conversation.";
+
+        }
+
+        else if (correct <= 7) {
+
+            title =
+                "THE SURVIVOR 😭";
+
+            message =
+                "You survived the Mind Lab. Your brain has officially requested a break.";
+
+            analysis =
+                "You made it through the challenge. There is definitely some serious brain activity happening here.";
+
+        }
+
+        else if (correct <= 10) {
+
+            title =
+                "PRETTY SHARP ⚡";
+
+            message =
+                "Not bad at all. Jenish might have to increase the difficulty next time.";
+
+            analysis =
+                "Solid performance. Your logical thinking skills appear to be functioning suspiciously well.";
+
+        }
+
+        else if (correct <= 13) {
+
+            title =
+                "BRAIN MODE: ACTIVATED 🧠";
+
+            message =
+                "Okay... you're actually pretty good.";
+
+            analysis =
+                "Very strong performance. You handled most of the challenges with impressive consistency.";
+
+        }
+
+        else {
+
+            title =
+                "ABSOLUTE MENACE 👑";
+
+            message =
+                "Congratulations. You may have been too powerful for the Mind Lab.";
+
+            analysis =
+                "Exceptional performance on this fun challenge. Jenish may need to upgrade the security system.";
+
+        }
+
+
+        document.getElementById(
+            "resultTitle"
+        ).textContent = title;
+
+
+        document.getElementById(
+            "resultMessage"
+        ).textContent = message;
+
+
+        document.getElementById(
+            "analysisText"
+        ).textContent = analysis;
+
+
+        function restartTest() {
+
+            localStorage.removeItem(
+                "diwillScore"
+            );
+
+            localStorage.removeItem(
+                "diwillCorrect"
+            );
+
+
+            window.location.href =
+                "test.html";
+
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
