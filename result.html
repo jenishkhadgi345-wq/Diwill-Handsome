@@ -1,380 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <title>Diwill Mind Lab - Result</title>
 
-    <title>
-        Mind Lab | Results
-    </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    <link
-        rel="stylesheet"
-        href="style.css">
+        body {
+            min-height: 100vh;
+            background: #0b0b0f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
 
+        .result-box {
+            width: 90%;
+            max-width: 600px;
+            padding: 45px 30px;
+            background: #15151c;
+            border: 1px solid #292936;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+        }
+
+        .small-title {
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            color: #aaa;
+            margin-bottom: 30px;
+            font-size: 17px;
+        }
+
+        .score {
+            font-size: 65px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .details {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 25px 0;
+            color: #ccc;
+        }
+
+        .detail h3 {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .detail p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 30px;
+            background: white;
+            color: black;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .score {
+                font-size: 50px;
+            }
+
+            .details {
+                gap: 20px;
+            }
+        }
+    </style>
 </head>
 
+<body>
 
-<body class="result-page">
+    <div class="result-box">
 
+        <div class="small-title">DIWILL MIND LAB</div>
 
-    <div class="background-glow glow-one"></div>
-    <div class="background-glow glow-two"></div>
+        <h1>Test Complete!</h1>
 
+        <p class="message">
+            Let's see how your brain performed...
+        </p>
 
-    <main class="result-container">
+        <div class="score" id="score">
+            0 / 15
+        </div>
 
+        <div class="details">
 
-        <div class="result-header">
-
-            <div class="result-icon">
-                🧠
+            <div class="detail">
+                <h3>CORRECT</h3>
+                <p id="correct">0</p>
             </div>
 
-            <p>
-                INTELLIGENCE ANALYSIS COMPLETE
-            </p>
+            <div class="detail">
+                <h3>WRONG</h3>
+                <p id="wrong">0</p>
+            </div>
 
-            <h1>
-
-                RESULTS FOR
-                <span>DIWILL</span>
-
-            </h1>
+            <div class="detail">
+                <h3>ACCURACY</h3>
+                <p id="percentage">0%</p>
+            </div>
 
         </div>
 
-
-        <section class="result-card">
-
-
-            <p class="score-label">
-
-                FINAL SCORE
-
-            </p>
-
-
-            <div class="score-circle">
-
-                <div>
-
-                    <strong
-                        id="finalScore">
-                        0
-                    </strong>
-
-                    <small>
-                        /15
-                    </small>
-
-                </div>
-
-            </div>
-
-
-            <h2 id="resultTitle">
-
-                Calculating...
-
-            </h2>
-
-
-            <p
-                id="resultMessage"
-                class="result-message">
-
-                Please wait...
-
-            </p>
-
-
-            <!-- Statistics -->
-
-            <div class="stats">
-
-
-                <div class="stat">
-
-                    <span id="correctAnswers">
-                        0
-                    </span>
-
-                    <small>
-                        CORRECT
-                    </small>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <span id="wrongAnswers">
-                        0
-                    </span>
-
-                    <small>
-                        WRONG
-                    </small>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <span id="percentage">
-                        0%
-                    </span>
-
-                    <small>
-                        ACCURACY
-                    </small>
-
-                </div>
-
-
-            </div>
-
-
-            <!-- Result message -->
-
-            <div class="analysis-box">
-
-                <div>
-                    📊
-                </div>
-
-                <div>
-
-                    <strong>
-                        JENISH'S ANALYSIS
-                    </strong>
-
-                    <p id="analysisText">
-
-                        Analysis loading...
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- Buttons -->
-
-            <div class="result-buttons">
-
-                <button
-                    class="restart-button"
-                    onclick="restartTest()">
-
-                    🔄
-                    TAKE TEST AGAIN
-
-                </button>
-
-
-                <button
-                    class="home-button"
-                    onclick="goHome()">
-
-                    ←
-                    HOME
-
-                </button>
-
-            </div>
-
-
-        </section>
-
-
-        <p class="creator-message">
-
-            Prepared with questionable confidence
-            by <strong>Jenish</strong> 😎
-
-        </p>
-
-
-    </main>
-
+        <a href="index.html" class="button">
+            Back to Start
+        </a>
+
+    </div>
 
     <script>
+        const score = Number(localStorage.getItem("diwillScore")) || 0;
+        const total = 15;
+        const wrong = total - score;
+        const percentage = Math.round((score / total) * 100);
 
-        const score =
-            Number(
-                localStorage.getItem("diwillScore")
-            ) || 0;
+        document.getElementById("score").textContent =
+            score + " / " + total;
 
+        document.getElementById("correct").textContent =
+            score;
 
-        const total =
-            15;
+        document.getElementById("wrong").textContent =
+            wrong;
 
-
-        const correct =
-            Number(
-                localStorage.getItem("diwillCorrect")
-            ) || 0;
-
-
-        const wrong =
-            total - correct;
-
-
-        const percentage =
-            Math.round(
-                (correct / total) * 100
-            );
-
-
-        const playerName =
-            localStorage.getItem(
-                "diwillName"
-            ) || "Diwill";
-
-
-        document.getElementById(
-            "finalScore"
-        ).textContent = correct;
-
-
-        document.getElementById(
-            "correctAnswers"
-        ).textContent = correct;
-
-
-        document.getElementById(
-            "wrongAnswers"
-        ).textContent = wrong;
-
-
-        document.getElementById(
-            "percentage"
-        ).textContent = percentage + "%";
-
-
-        let title = "";
-
-        let message = "";
-
-        let analysis = "";
-
-
-        if (correct <= 4) {
-
-            title =
-                "THE SUSPICIOUS ONE 🧐";
-
-            message =
-                "Diwill... we may need to investigate whether you actually read the questions.";
-
-            analysis =
-                "The Mind Lab recommends a second attempt. Preferably after your brain has officially joined the conversation.";
-
-        }
-
-        else if (correct <= 7) {
-
-            title =
-                "THE SURVIVOR 😭";
-
-            message =
-                "You survived the Mind Lab. Your brain has officially requested a break.";
-
-            analysis =
-                "You made it through the challenge. There is definitely some serious brain activity happening here.";
-
-        }
-
-        else if (correct <= 10) {
-
-            title =
-                "PRETTY SHARP ⚡";
-
-            message =
-                "Not bad at all. Jenish might have to increase the difficulty next time.";
-
-            analysis =
-                "Solid performance. Your logical thinking skills appear to be functioning suspiciously well.";
-
-        }
-
-        else if (correct <= 13) {
-
-            title =
-                "BRAIN MODE: ACTIVATED 🧠";
-
-            message =
-                "Okay... you're actually pretty good.";
-
-            analysis =
-                "Very strong performance. You handled most of the challenges with impressive consistency.";
-
-        }
-
-        else {
-
-            title =
-                "ABSOLUTE MENACE 👑";
-
-            message =
-                "Congratulations. You may have been too powerful for the Mind Lab.";
-
-            analysis =
-                "Exceptional performance on this fun challenge. Jenish may need to upgrade the security system.";
-
-        }
-
-
-        document.getElementById(
-            "resultTitle"
-        ).textContent = title;
-
-
-        document.getElementById(
-            "resultMessage"
-        ).textContent = message;
-
-
-        document.getElementById(
-            "analysisText"
-        ).textContent = analysis;
-
-
-        function restartTest() {
-
-            localStorage.removeItem(
-                "diwillScore"
-            );
-
-            localStorage.removeItem(
-                "diwillCorrect"
-            );
-
-
-            window.location.href =
-                "test.html";
-
-        }
-
-
-        function goHome() {
-
-            window.location.href =
-                "index.html";
-
-        }
-
+        document.getElementById("percentage").textContent =
+            percentage + "%";
     </script>
 
-
 </body>
-
 </html>
