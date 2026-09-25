@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diwill Mind Lab - Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0b0f;
+            color: white;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .box {
+            background: #15151c;
+            border: 1px solid #292936;
+            border-radius: 18px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: #0b0b0f;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #loginButton {
+            background: white;
+            color: black;
+        }
+
+        #logoutButton {
+            background: #33333d;
+            color: white;
+            float: right;
+        }
+
+        #loginError {
+            color: #ff6b6b;
+            margin-top: 15px;
+        }
+
+        #loginPage {
+            max-width: 500px;
+            margin: 100px auto;
+        }
+
+        #dashboard {
+            display: none;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: #0b0b0f;
+            border: 1px solid #292936;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-title {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .table-box {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #292936;
+        }
+
+        th {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .loading {
+            color: #aaa;
+            padding: 20px 0;
+        }
+
+        .success {
+            color: #7cff9b;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+
+    <div class="box" id="loginPage">
+
+        <h1>Admin Login</h1>
+
+        <p class="subtitle">
+            Diwill Mind Lab
+        </p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Admin Email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button id="loginButton">
+            Login
+        </button>
+
+        <p id="loginError"></p>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboard">
+
+        <div class="box">
+
+            <button id="logoutButton">
+                Logout
+            </button>
+
+            <h1>Mind Lab Dashboard</h1>
+
+            <p class="subtitle">
+                Diwill's test results
+            </p>
+
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-title">
+                        TESTS TAKEN
+                    </div>
+
+                    <div class="stat-value" id="totalTests">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-title">
+                        LATEST SCORE
+                    </div>
+
+                    <div class="stat-value" id="latestScore">
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-title">
+                        LATEST ACCURACY
+                    </div>
+
+                    <div class="stat-value" id="latestAccuracy">
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Correct</th>
+                            <th>Wrong</th>
+                            <th>Accuracy</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="resultsTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+    /* =========================
+       FIREBASE IMPORTS
+    ========================= */
+
+    import { initializeApp }
+        from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+    import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        signOut
+    }
+        from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+    import {
+        getFirestore,
+        collection,
+        getDocs
+    }
+        from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+    /* =========================
+       FIREBASE CONFIG
+    ========================= */
+
+    const firebaseConfig = {
+
+        apiKey: "AIzaSyB7EjsA3o87EKae_9UcopzMttyRfAyxQfM",
+
+        authDomain:
+            "diwill-mind-lab.firebaseapp.com",
+
+        projectId:
+            "diwill-mind-lab",
+
+        storageBucket:
+            "diwill-mind-lab.firebasestorage.app",
+
+        messagingSenderId:
+            "163780085098",
+
+        appId:
+            "1:163780085098:web:ecfc8f2a5d22a0a8f75113",
+
+        measurementId:
+            "G-R1MRZLRDQ6"
+    };
+
+
+    /* =========================
+       START FIREBASE
+    ========================= */
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const db = getFirestore(app);
+
+
+    /* =========================
+       GET HTML ELEMENTS
+    ========================= */
+
+    const loginPage =
+        document.getElementById("loginPage");
+
+    const dashboard =
+        document.getElementById("dashboard");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+    const loginError =
+        document.getElementById("loginError");
+
+    const resultsTable =
+        document.getElementById("resultsTable");
+
+
+    /* =========================
+       LOGIN
+    ========================= */
+
+    loginButton.addEventListener("click", async function () {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        loginError.textContent = "";
+
+        if (!email || !password) {
+
+            loginError.textContent =
+                "Please enter your email and password.";
+
+            return;
+        }
+
+
+        loginButton.textContent = "Logging in...";
+        loginButton.disabled = true;
+
+
+        try {
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            loginError.textContent =
+                "Login failed. Check your email and password.";
+
+            loginButton.textContent = "Login";
+
+            loginButton.disabled = false;
+        }
+
+    });
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    logoutButton.addEventListener("click", async function () {
+
+        await signOut(auth);
+
+    });
+
+
+    /* =========================
+       CHECK LOGIN
+    ========================= */
+
+    onAuthStateChanged(auth, function (user) {
+
+        if (user) {
+
+            loginPage.style.display = "none";
+
+            dashboard.style.display = "block";
+
+            loadResults();
+
+        } else {
+
+            loginPage.style.display = "block";
+
+            dashboard.style.display = "none";
+
+        }
+
+    });
+
+
+    /* =========================
+       LOAD FIRESTORE RESULTS
+    ========================= */
+
+    async function loadResults() {
+
+        resultsTable.innerHTML = `
+            <tr>
+                <td colspan="5" class="loading">
+                    Loading results...
+                </td>
+            </tr>
+        `;
+
+
+        try {
+
+            const resultCollection =
+                collection(db, "testResults");
+
+            const snapshot =
+                await getDocs(resultCollection);
+
+
+            resultsTable.innerHTML = "";
+
+
+            if (snapshot.empty) {
+
+                resultsTable.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            No test results found.
+                        </td>
+                    </tr>
+                `;
+
+                document.getElementById("totalTests")
+                    .textContent = "0";
+
+                return;
+            }
+
+
+            let results = [];
+
+
+            snapshot.forEach(function (doc) {
+
+                const data = doc.data();
+
+                results.push(data);
+
+            });
+
+
+            /* Show newest result first when possible */
+
+            results.sort(function (a, b) {
+
+                if (
+                    a.submittedAt &&
+                    b.submittedAt &&
+                    a.submittedAt.seconds &&
+                    b.submittedAt.seconds
+                ) {
+
+                    return b.submittedAt.seconds -
+                           a.submittedAt.seconds;
+                }
+
+                return 0;
+
+            });
+
+
+            /* =========================
+               DASHBOARD STATS
+            ========================= */
+
+            document.getElementById("totalTests")
+                .textContent = results.length;
+
+
+            const latest = results[0];
+
+
+            document.getElementById("latestScore")
+                .textContent =
+                (latest.score || 0) +
+                "/" +
+                (latest.total || 15);
+
+
+            document.getElementById("latestAccuracy")
+                .textContent =
+                (latest.percentage || 0) + "%";
+
+
+            /* =========================
+               DISPLAY RESULTS
+            ========================= */
+
+            results.forEach(function (data) {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${data.name || "Diwill"}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${data.score || 0}/${data.total || 15}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${data.correct || 0}
+                    </td>
+
+                    <td>
+                        ${data.wrong || 0}
+                    </td>
+
+                    <td>
+                        ${data.percentage || 0}%
+                    </td>
+
+                `;
+
+
+                resultsTable.appendChild(row);
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Firestore error:",
+                error
+            );
+
+
+            resultsTable.innerHTML = `
+
+                <tr>
+
+                    <td colspan="5">
+
+                        Could not load results.
+
+                        <br><br>
+
+                        <small>
+                            ${error.message}
+                        </small>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
